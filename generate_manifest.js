@@ -5,11 +5,13 @@
  *
  * Folder structure expected:
  *   data/
- *     <topic-slug>/
- *       meta.json          { "title", "description", "color" }
- *       set-01.js
- *       set-02.js
- *       ...
+ *     <grade-slug>/
+ *       meta.json          { "title", "color" }
+ *       <topic-slug>/
+ *         meta.json        { "title", "description", "color" }
+ *         set-01.js
+ *         set-02.js
+ *         ...
  */
 
 const fs   = require('fs');
@@ -40,32 +42,49 @@ if (!fs.existsSync(DATA_DIR) || !fs.statSync(DATA_DIR).isDirectory()) {
   process.exit(1);
 }
 
-const topics = [];
+const grades = [];
 
-for (const topicSlug of fs.readdirSync(DATA_DIR).sort()) {
-  const topicDir = path.join(DATA_DIR, topicSlug);
-  if (!fs.statSync(topicDir).isDirectory()) continue;
+for (const gradeSlug of fs.readdirSync(DATA_DIR).sort()) {
+  const gradeDir = path.join(DATA_DIR, gradeSlug);
+  if (!fs.statSync(gradeDir).isDirectory()) continue;
 
-  const metaPath = path.join(topicDir, 'meta.json');
-  if (!fs.existsSync(metaPath)) {
-    console.warn(`  Warning: no meta.json in '${topicDir}' — skipping`);
+  const gradeMeta = path.join(gradeDir, 'meta.json');
+  if (!fs.existsSync(gradeMeta)) {
+    console.warn(`  Warning: no meta.json in '${gradeDir}' — skipping`);
     continue;
   }
 
-  const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+  const grade = JSON.parse(fs.readFileSync(gradeMeta, 'utf8'));
+  const topics = [];
 
-  const sets = fs.readdirSync(topicDir)
-    .filter(f => f.startsWith('set-') && f.endsWith('.js'))
-    .sort()
-    .map(filename => {
-      const setId = filename.replace(/\.js$/, '');
-      const info  = extractSetInfo(path.join(topicDir, filename));
-      return { id: setId, file: `${DATA_DIR}/${topicSlug}/${filename}`, ...info };
-    });
+  for (const topicSlug of fs.readdirSync(gradeDir).sort()) {
+    const topicDir = path.join(gradeDir, topicSlug);
+    if (!fs.statSync(topicDir).isDirectory()) continue;
 
-  topics.push({ slug: topicSlug, ...meta, sets });
-  console.log(`  ${topicSlug}: ${sets.length} set(s)`);
+    const topicMeta = path.join(topicDir, 'meta.json');
+    if (!fs.existsSync(topicMeta)) continue;
+
+    const meta = JSON.parse(fs.readFileSync(topicMeta, 'utf8'));
+
+    const sets = fs.readdirSync(topicDir)
+      .filter(f => f.startsWith('set-') && f.endsWith('.js'))
+      .sort()
+      .map(filename => {
+        const setId = filename.replace(/\.js$/, '');
+        const info  = extractSetInfo(path.join(topicDir, filename));
+        return {
+          id:   setId,
+          file: `${DATA_DIR}/${gradeSlug}/${topicSlug}/${filename}`,
+          ...info
+        };
+      });
+
+    topics.push({ slug: topicSlug, ...meta, sets });
+    console.log(`  ${gradeSlug}/${topicSlug}: ${sets.length} set(s)`);
+  }
+
+  grades.push({ slug: gradeSlug, ...grade, topics });
 }
 
-fs.writeFileSync(OUTPUT, JSON.stringify({ topics }, null, 2), 'utf8');
-console.log(`\nWrote ${OUTPUT}  (${topics.length} topic(s))`);
+fs.writeFileSync(OUTPUT, JSON.stringify({ grades }, null, 2), 'utf8');
+console.log(`\nWrote ${OUTPUT}  (${grades.length} grade(s))`);

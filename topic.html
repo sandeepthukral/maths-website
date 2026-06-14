@@ -13,6 +13,8 @@
     <nav class="breadcrumb">
       <a href="index.html">Home</a>
       <span class="breadcrumb-sep">/</span>
+      <a href="#" id="bc-grade-link">…</a>
+      <span class="breadcrumb-sep">/</span>
       <span class="breadcrumb-current" id="bc-topic">…</span>
     </nav>
 
@@ -22,24 +24,27 @@
 
   <script>
     async function init() {
-      const params = new URLSearchParams(window.location.search);
-      const slug = params.get('slug');
-
-      const setsList = document.getElementById('sets-list');
+      const params    = new URLSearchParams(window.location.search);
+      const gradeSlug = params.get('grade');
+      const topicSlug = params.get('slug');
+      const setsList  = document.getElementById('sets-list');
 
       try {
         const manifest = await fetch('manifest.json').then(r => r.json());
-        const topic = manifest.topics.find(t => t.slug === slug);
+        const grade    = manifest.grades.find(g => g.slug === gradeSlug);
+        const topic    = grade?.topics.find(t => t.slug === topicSlug);
 
         if (!topic) {
           setsList.innerHTML = '<p class="empty">Topic not found.</p>';
           return;
         }
 
-        // Apply topic color as CSS variable
         document.documentElement.style.setProperty('--topic-color', topic.color);
-
         document.title = `${topic.title} — Maths Practice`;
+
+        const gradeLink = document.getElementById('bc-grade-link');
+        gradeLink.textContent = grade.title;
+        gradeLink.href = `grade.html?grade=${gradeSlug}`;
         document.getElementById('bc-topic').textContent = topic.title;
 
         document.getElementById('topic-banner').innerHTML = `
@@ -52,19 +57,19 @@
           </div>
         `;
 
-        if (topic.sets.length === 0) {
+        if (!topic.sets.length) {
           setsList.innerHTML = '<p class="empty">No sets yet for this topic.</p>';
           return;
         }
 
         setsList.innerHTML = topic.sets.map(set => {
-          const num = set.id.replace('set-', '');
+          const num    = set.id.replace('set-', '');
           const badges = set.categories
             .map(c => `<span class="badge badge-${c.replace(/\s+/g, '-')}">${c}</span>`)
             .join('');
           return `
             <a class="set-card fade-in"
-               href="practice.html?topic=${topic.slug}&set=${set.id}">
+               href="practice.html?grade=${gradeSlug}&topic=${topicSlug}&set=${set.id}">
               <div class="set-card__num">${num}</div>
               <div class="set-card__body">
                 <div class="set-card__title">${set.title}</div>

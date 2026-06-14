@@ -119,21 +119,30 @@
       }
     }
 
+    // Flat list of all topics across all grades, keyed by "grade/topic"
+    function allTopics() {
+      return manifest.grades.flatMap(g =>
+        g.topics.map(t => ({ ...t, gradeSlug: g.slug, gradeTitle: g.title,
+                              key: `${g.slug}/${t.slug}` }))
+      );
+    }
+
     function renderTopicChecks() {
       const container = document.getElementById('topic-checks');
-      if (!manifest.topics.length) {
+      const topics = allTopics();
+      if (!topics.length) {
         container.innerHTML = '<p class="empty">No topics available.</p>';
         return;
       }
-      container.innerHTML = manifest.topics.map(t => `
+      container.innerHTML = topics.map(t => `
         <label class="topic-check" style="--topic-color: ${t.color}">
-          <input type="checkbox" value="${t.slug}" onchange="toggleTopic(this)">
+          <input type="checkbox" value="${t.key}" onchange="toggleTopic(this)">
           <div class="topic-check__stripe"></div>
           <div class="topic-check__body">
             <div class="topic-check__tick">✓</div>
             <div>
               <div class="topic-check__title">${t.title}</div>
-              <div class="topic-check__count">${t.sets.length} set${t.sets.length !== 1 ? 's' : ''}</div>
+              <div class="topic-check__count">${t.gradeTitle} · ${t.sets.length} set${t.sets.length !== 1 ? 's' : ''}</div>
             </div>
           </div>
         </label>
@@ -189,9 +198,10 @@
 
       try {
         const pool = [];
+        const topics = allTopics();
 
-        for (const slug of selectedTopics) {
-          const topic = manifest.topics.find(t => t.slug === slug);
+        for (const key of selectedTopics) {
+          const topic = topics.find(t => t.key === key);
           for (const set of topic.sets) {
             await loadScript(set.file);
             const paper = window.PAPER || {};
@@ -217,7 +227,7 @@
         testQuestions = pool.slice(0, TEST_SIZE);
 
         const topicNames = [...selectedTopics]
-          .map(slug => manifest.topics.find(t => t.slug === slug).title)
+          .map(key => topics.find(t => t.key === key).title)
           .join(', ');
         const diffLabel = diffMode === 'medium-hard' ? 'Medium & Hard' : 'All levels';
         renderTestPage(testQuestions, topicNames, diffLabel);

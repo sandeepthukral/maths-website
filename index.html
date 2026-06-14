@@ -12,10 +12,10 @@
   <div class="page">
     <div class="page-head">
       <h1 class="page-title">Maths Practice</h1>
-      <p class="page-subtitle">Choose a topic to get started</p>
+      <p class="page-subtitle">Choose a grade to get started</p>
     </div>
-    <div class="cards-grid" id="topics-grid">
-      <p class="loading">Loading topics…</p>
+    <div class="cards-grid" id="grades-grid">
+      <p class="loading">Loading…</p>
     </div>
     <div class="test-promo">
       <a href="test.html" class="test-promo-link">
@@ -31,26 +31,29 @@
 
   <script>
     async function init() {
-      const grid = document.getElementById('topics-grid');
+      const grid = document.getElementById('grades-grid');
       try {
         const manifest = await fetch('manifest.json').then(r => r.json());
 
-        if (manifest.topics.length === 0) {
-          grid.innerHTML = '<p class="empty">No topics found. Add a folder to data/ and run generate_manifest.py.</p>';
+        if (!manifest.grades.length) {
+          grid.innerHTML = '<p class="empty">No grades found. Add a folder to data/ and run generate_manifest.js.</p>';
           return;
         }
 
-        grid.innerHTML = manifest.topics.map(topic => {
-          const setWord = topic.sets.length === 1 ? 'set' : 'sets';
+        grid.innerHTML = manifest.grades.map(grade => {
+          const topicCount = grade.topics.length;
+          const topicWord  = topicCount === 1 ? 'topic' : 'topics';
+          const totalSets  = grade.topics.reduce((n, t) => n + t.sets.length, 0);
+          const setWord    = totalSets === 1 ? 'set' : 'sets';
           return `
-            <a class="topic-card fade-in" href="topic.html?slug=${topic.slug}"
-               style="--topic-color: ${topic.color}">
+            <a class="topic-card fade-in" href="grade.html?grade=${grade.slug}"
+               style="--topic-color: ${grade.color || '#6366f1'}">
               <div class="topic-card__stripe"></div>
               <div class="topic-card__body">
-                <h2 class="topic-card__title">${topic.title}</h2>
-                <p class="topic-card__desc">${topic.description}</p>
+                <h2 class="topic-card__title">${grade.title}</h2>
+                <p class="topic-card__desc">${topicCount} ${topicWord} · ${totalSets} ${setWord}</p>
                 <div class="topic-card__footer">
-                  <span class="topic-card__count">${topic.sets.length} ${setWord}</span>
+                  <span class="topic-card__count"></span>
                   <span class="topic-card__arrow">→</span>
                 </div>
               </div>

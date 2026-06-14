@@ -16,6 +16,8 @@
     <nav class="breadcrumb">
       <a href="index.html">Home</a>
       <span class="breadcrumb-sep">/</span>
+      <a href="#" id="bc-grade-link">…</a>
+      <span class="breadcrumb-sep">/</span>
       <a href="#" id="bc-topic-link">…</a>
       <span class="breadcrumb-sep">/</span>
       <span class="breadcrumb-current" id="bc-set">…</span>
@@ -145,7 +147,8 @@
 
     /* ── Init ───────────────────────────────── */
     async function init() {
-      const params = new URLSearchParams(window.location.search);
+      const params    = new URLSearchParams(window.location.search);
+      const gradeSlug = params.get('grade');
       const topicSlug = params.get('topic');
       const setId     = params.get('set');
       const container = document.getElementById('question-list');
@@ -154,13 +157,14 @@
         // Load manifest (for breadcrumb + topic color) and question script in parallel
         const [manifest] = await Promise.all([
           fetch('manifest.json').then(r => r.json()),
-          loadScript(`data/${topicSlug}/${setId}.js`)
+          loadScript(`data/${gradeSlug}/${topicSlug}/${setId}.js`)
         ]);
 
         // PAPER and QUESTIONS are now globals (var) set by the loaded script
         const paper = window.PAPER || {};
 
-        const topicData = manifest.topics.find(t => t.slug === topicSlug);
+        const gradeData  = manifest.grades.find(g => g.slug === gradeSlug);
+        const topicData  = gradeData?.topics.find(t => t.slug === topicSlug);
         const topicColor = topicData?.color ?? '#6366f1';
         const topicTitle = topicData?.title ?? topicSlug;
 
@@ -168,9 +172,13 @@
         document.documentElement.style.setProperty('--topic-color', topicColor);
 
         // Breadcrumbs
+        const bcGradeLink = document.getElementById('bc-grade-link');
+        bcGradeLink.textContent = gradeData?.title ?? gradeSlug;
+        bcGradeLink.href = `grade.html?grade=${gradeSlug}`;
+
         const bcTopicLink = document.getElementById('bc-topic-link');
         bcTopicLink.textContent = topicTitle;
-        bcTopicLink.href = `topic.html?slug=${topicSlug}`;
+        bcTopicLink.href = `topic.html?grade=${gradeSlug}&slug=${topicSlug}`;
         document.getElementById('bc-set').textContent =
           'Set ' + setId.replace('set-', '');
 
