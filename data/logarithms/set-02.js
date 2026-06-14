@@ -1,7 +1,13 @@
 // Use var (not const/let) so these become window.PAPER / window.QUESTIONS
 // when loaded via dynamic <script> injection in practice.html.
 var PAPER = {
-  title: "Logarithm practice — 50 questions"
+  title: "Logarithm practice — 50 questions",
+  difficultyRanges: [
+    { level: 1, from:  1, to: 10 },
+    { level: 2, from: 11, to: 25 },
+    { level: 3, from: 26, to: 40 },
+    { level: 4, from: 41, to: 50 }
+  ]
 };
 
 var QUESTIONS = [

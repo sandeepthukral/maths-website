@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Test — Maths Practice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="page">
+
+    <!-- ── Setup ─────────────────────────────────────────── -->
+    <section id="setup-section">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Practice Test</span>
+      </nav>
+
+      <div class="page-head">
+        <h1 class="page-title">Practice Test</h1>
+        <p class="page-subtitle">Choose your topics and difficulty, then generate a 10-question test.</p>
+      </div>
+
+      <div class="test-setup">
+        <div class="setup-block">
+          <h2 class="setup-label">Topics</h2>
+          <div class="topic-checks" id="topic-checks">
+            <p class="loading">Loading…</p>
+          </div>
+        </div>
+
+        <div class="setup-block">
+          <h2 class="setup-label">Difficulty</h2>
+          <div class="diff-options">
+            <label class="diff-option">
+              <input type="radio" name="diff" value="medium-hard" checked>
+              <div class="diff-option__content">
+                <span class="diff-option__name">Medium &amp; Hard</span>
+                <span class="diff-option__hint">IB exam-style questions</span>
+              </div>
+              <div class="diff-option__badges">
+                <span class="badge badge-diff-2">Medium</span>
+                <span class="badge badge-diff-3">Hard</span>
+              </div>
+            </label>
+            <label class="diff-option">
+              <input type="radio" name="diff" value="all">
+              <div class="diff-option__content">
+                <span class="diff-option__name">All levels</span>
+                <span class="diff-option__hint">Includes Easy and Extension</span>
+              </div>
+              <div class="diff-option__badges">
+                <span class="badge badge-diff-1">Easy</span>
+                <span class="badge badge-diff-2">Medium</span>
+                <span class="badge badge-diff-3">Hard</span>
+                <span class="badge badge-diff-4">Extension</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <p id="setup-error" class="setup-error"></p>
+        <button class="btn-generate" id="generate-btn" onclick="generateTest()">Generate test →</button>
+      </div>
+    </section>
+
+    <!-- ── Test ──────────────────────────────────────────── -->
+    <section id="test-section" style="display:none">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="#" onclick="showSetup(); return false">Practice Test</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Test</span>
+      </nav>
+
+      <div class="page-head">
+        <h1 class="page-title" id="test-title">Practice Test</h1>
+        <p class="page-subtitle" id="test-subtitle"></p>
+      </div>
+
+      <div class="practice-controls">
+        <span class="counter" id="test-counter">0 / 10 answers shown</span>
+        <button class="filter-btn" onclick="showAll()">Show all answers</button>
+      </div>
+
+      <div id="test-questions"></div>
+
+      <div class="test-footer">
+        <button class="btn-generate" onclick="showSetup()">← Generate new test</button>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    const DIFF_LABELS = { 1: 'Easy', 2: 'Medium', 3: 'Hard', 4: 'Extension' };
+    const TEST_SIZE = 10;
+
+    let manifest = null;
+    const selectedTopics = new Set();
+    const revealedIds = new Set();
+    let testQuestions = [];
+
+    /* ── Init ───────────────────────────────── */
+    async function init() {
+      try {
+        manifest = await fetch('manifest.json').then(r => r.json());
+        renderTopicChecks();
+      } catch (err) {
+        document.getElementById('topic-checks').innerHTML =
+          `<p class="empty">Could not load topics.<br><small>${err.message}</small></p>`;
+      }
+    }
+
+    function renderTopicChecks() {
+      const container = document.getElementById('topic-checks');
+      if (!manifest.topics.length) {
+        container.innerHTML = '<p class="empty">No topics available.</p>';
+        return;
+      }
+      container.innerHTML = manifest.topics.map(t => `
+        <label class="topic-check" style="--topic-color: ${t.color}">
+          <input type="checkbox" value="${t.slug}" onchange="toggleTopic(this)">
+          <div class="topic-check__stripe"></div>
+          <div class="topic-check__body">
+            <div class="topic-check__tick">✓</div>
+            <div>
+              <div class="topic-check__title">${t.title}</div>
+              <div class="topic-check__count">${t.sets.length} set${t.sets.length !== 1 ? 's' : ''}</div>
+            </div>
+          </div>
+        </label>
+      `).join('');
+    }
+
+    function toggleTopic(cb) {
+      if (cb.checked) selectedTopics.add(cb.value);
+      else selectedTopics.delete(cb.value);
+    }
+
+    /* ── Script loading ─────────────────────── */
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = () => reject(new Error(`Failed to load ${src}`));
+        document.head.appendChild(s);
+      });
+    }
+
+    /* ── Difficulty resolution ──────────────── */
+    function getQuestionDifficulty(paper, question) {
+      if (question.difficulty != null) return question.difficulty;
+      if (paper.difficultyRanges) {
+        for (const r of paper.difficultyRanges) {
+          if (question.id >= r.from && question.id <= r.to) return r.level;
+        }
+      }
+      if (paper.difficultyMap) {
+        for (const [level, ids] of Object.entries(paper.difficultyMap)) {
+          if (ids.includes(question.id)) return parseInt(level);
+        }
+      }
+      return null;
+    }
+
+    /* ── Generate ───────────────────────────── */
+    async function generateTest() {
+      const errEl = document.getElementById('setup-error');
+      errEl.textContent = '';
+
+      if (!selectedTopics.size) {
+        errEl.textContent = 'Please select at least one topic.';
+        return;
+      }
+
+      const diffMode = document.querySelector('input[name="diff"]:checked').value;
+      const btn = document.getElementById('generate-btn');
+      btn.disabled = true;
+      btn.textContent = 'Loading…';
+
+      try {
+        const pool = [];
+
+        for (const slug of selectedTopics) {
+          const topic = manifest.topics.find(t => t.slug === slug);
+          for (const set of topic.sets) {
+            await loadScript(set.file);
+            const paper = window.PAPER || {};
+            const questions = window.QUESTIONS || [];
+            for (const q of questions) {
+              const diff = getQuestionDifficulty(paper, q);
+              if (diffMode === 'medium-hard' && diff !== 2 && diff !== 3) continue;
+              pool.push({ ...q, difficulty: diff, topicTitle: topic.title });
+            }
+          }
+        }
+
+        if (!pool.length) {
+          errEl.textContent = 'No questions match your selection. Try "All levels" or select more topics.';
+          return;
+        }
+
+        // Fisher-Yates shuffle
+        for (let i = pool.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        testQuestions = pool.slice(0, TEST_SIZE);
+
+        const topicNames = [...selectedTopics]
+          .map(slug => manifest.topics.find(t => t.slug === slug).title)
+          .join(', ');
+        const diffLabel = diffMode === 'medium-hard' ? 'Medium & Hard' : 'All levels';
+        renderTestPage(testQuestions, topicNames, diffLabel);
+
+      } catch (err) {
+        errEl.textContent = `Error loading questions: ${err.message}`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Generate test →';
+      }
+    }
+
+    /* ── Render test ────────────────────────── */
+    function renderTestPage(questions, topicNames, diffLabel) {
+      revealedIds.clear();
+
+      document.getElementById('test-title').textContent =
+        `Practice Test — ${questions.length} question${questions.length !== 1 ? 's' : ''}`;
+      document.getElementById('test-subtitle').textContent = `${topicNames} · ${diffLabel}`;
+
+      const container = document.getElementById('test-questions');
+      container.innerHTML = questions.map((q, i) => {
+        const dl = q.difficulty ? DIFF_LABELS[q.difficulty] : '';
+        const diffBadge = dl ? `<span class="badge badge-diff-${q.difficulty}">${dl}</span>` : '';
+        const catBadge  = `<span class="badge badge-${q.category.replace(/\s+/g, '-')}">${q.category}</span>`;
+        return `
+          <div class="question-card">
+            <div class="question-inner">
+              <span class="q-number">${i + 1}.</span>
+              <div class="q-content">
+                <div class="q-badges">${diffBadge}${catBadge}</div>
+                <div class="q-text">${q.question}</div>
+                <button class="reveal-btn" onclick="toggleAnswer(${i}, this)">Show answer</button>
+                <div class="answer-block" id="ans-${i}">
+                  <div class="answer-label">Answer</div>
+                  <div class="answer-text">${q.answer}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      renderMathInElement(container, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true  },
+          { left: '$',  right: '$',  display: false },
+        ],
+        throwOnError: false
+      });
+
+      updateCounter();
+      document.getElementById('setup-section').style.display = 'none';
+      document.getElementById('test-section').style.display = '';
+      window.scrollTo(0, 0);
+    }
+
+    /* ── Answer reveal ──────────────────────── */
+    function toggleAnswer(idx, btn) {
+      const block = document.getElementById(`ans-${idx}`);
+      if (revealedIds.has(idx)) {
+        revealedIds.delete(idx);
+        block.classList.remove('visible');
+        btn.classList.remove('revealed');
+        btn.textContent = 'Show answer';
+      } else {
+        revealedIds.add(idx);
+        block.classList.add('visible');
+        btn.classList.add('revealed');
+        btn.textContent = 'Hide answer';
+      }
+      updateCounter();
+    }
+
+    function showAll() {
+      document.querySelectorAll('#test-questions .answer-block').forEach((block, i) => {
+        if (!revealedIds.has(i)) {
+          revealedIds.add(i);
+          block.classList.add('visible');
+          const btn = block.previousElementSibling;
+          btn.classList.add('revealed');
+          btn.textContent = 'Hide answer';
+        }
+      });
+      updateCounter();
+    }
+
+    function updateCounter() {
+      document.getElementById('test-counter').textContent =
+        `${revealedIds.size} / ${testQuestions.length} answers shown`;
+    }
+
+    function showSetup() {
+      document.getElementById('test-section').style.display = 'none';
+      document.getElementById('setup-section').style.display = '';
+      window.scrollTo(0, 0);
+    }
+
+    init();
+  </script>
+</body>
+</html>
