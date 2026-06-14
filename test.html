@@ -30,7 +30,7 @@
       <div class="test-setup">
         <div class="setup-block">
           <h2 class="setup-label">Topics</h2>
-          <div class="topic-checks" id="topic-checks">
+          <div id="topic-checks">
             <p class="loading">Loading…</p>
           </div>
         </div>
@@ -129,24 +129,35 @@
 
     function renderTopicChecks() {
       const container = document.getElementById('topic-checks');
-      const topics = allTopics();
-      if (!topics.length) {
+      if (!manifest.grades.length) {
         container.innerHTML = '<p class="empty">No topics available.</p>';
         return;
       }
-      container.innerHTML = topics.map(t => `
-        <label class="topic-check" style="--topic-color: ${t.color}">
-          <input type="checkbox" value="${t.key}" onchange="toggleTopic(this)">
-          <div class="topic-check__stripe"></div>
-          <div class="topic-check__body">
-            <div class="topic-check__tick">✓</div>
-            <div>
-              <div class="topic-check__title">${t.title}</div>
-              <div class="topic-check__count">${t.gradeTitle} · ${t.sets.length} set${t.sets.length !== 1 ? 's' : ''}</div>
-            </div>
+      container.innerHTML = manifest.grades.map(g => {
+        const topicCards = g.topics.map(t => {
+          const key = `${g.slug}/${t.slug}`;
+          const setWord = t.sets.length === 1 ? 'set' : 'sets';
+          return `
+            <label class="topic-check" style="--topic-color: ${t.color}">
+              <input type="checkbox" value="${key}" onchange="toggleTopic(this)">
+              <div class="topic-check__stripe"></div>
+              <div class="topic-check__body">
+                <div class="topic-check__tick">✓</div>
+                <div>
+                  <div class="topic-check__title">${t.title}</div>
+                  <div class="topic-check__count">${t.sets.length} ${setWord}</div>
+                </div>
+              </div>
+            </label>
+          `;
+        }).join('');
+        return `
+          <div class="grade-group">
+            <h3 class="grade-group__title">${g.title}</h3>
+            <div class="topic-checks">${topicCards}</div>
           </div>
-        </label>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function toggleTopic(cb) {

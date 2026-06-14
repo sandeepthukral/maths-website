@@ -402,6 +402,14 @@ body {
   margin-bottom: 0.75rem;
 }
 
+.grade-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.grade-group__title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #94a3b8;
+}
 .topic-checks {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
