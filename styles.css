@@ -210,10 +210,14 @@ body {
   letter-spacing: 0.03em;
   text-transform: uppercase;
 }
-.badge-Express   { background: #dcfce7; color: #15803d; }
-.badge-Log-laws  { background: #f3e8ff; color: #7e22ce; }
-.badge-Solve     { background: #dbeafe; color: #1d4ed8; }
-.badge-Rewrite   { background: #fff7ed; color: #c2410c; }
+.badge-Express        { background: #dcfce7; color: #15803d; }
+.badge-Log-laws       { background: #f3e8ff; color: #7e22ce; }
+.badge-Solve          { background: #dbeafe; color: #1d4ed8; }
+.badge-Rewrite        { background: #fff7ed; color: #c2410c; }
+.badge-Evaluate       { background: #ccfbf1; color: #0d9488; }
+.badge-Single-log     { background: #fae8ff; color: #a21caf; }
+.badge-Simplify       { background: #fef9c3; color: #a16207; }
+.badge-Change-of-base { background: #f1f5f9; color: #475569; }
 
 /* ── Practice page controls ─────────────────────────── */
 .practice-controls {
