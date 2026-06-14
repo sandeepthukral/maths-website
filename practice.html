@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice — Maths Practice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="page">
+    <nav class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="#" id="bc-topic-link">…</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current" id="bc-set">…</span>
+    </nav>
+
+    <div class="page-head">
+      <h1 class="page-title" id="practice-title">Loading…</h1>
+    </div>
+
+    <div class="practice-controls">
+      <div class="filter-tabs" id="filter-tabs"></div>
+      <span class="counter" id="counter">0 / 0 answers shown</span>
+    </div>
+
+    <main id="question-list"></main>
+  </div>
+
+  <script>
+    /* ── State ──────────────────────────────── */
+    // QUESTIONS and PAPER are set as globals by the dynamically loaded set file.
+    // They must use `var` in the data file so they appear on window.
+    let CATEGORIES = [];
+    let activeFilter = 'All';
+    const revealedIds = new Set();
+
+    /* ── Helpers ────────────────────────────── */
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = () => reject(new Error(`Could not load ${src}`));
+        document.head.appendChild(s);
+      });
+    }
+
+    function badgeClass(cat) {
+      return 'badge-' + cat.replace(/\s+/g, '-');
+    }
+
+    function visibleQuestions() {
+      const qs = window.QUESTIONS || [];
+      return activeFilter === 'All'
+        ? qs
+        : qs.filter(q => q.category === activeFilter);
+    }
+
+    /* ── Render ─────────────────────────────── */
+    function renderFilters() {
+      document.getElementById('filter-tabs').innerHTML = CATEGORIES.map(cat =>
+        `<button class="filter-btn${cat === activeFilter ? ' active' : ''}"
+                 onclick="setFilter('${cat}')">${cat}</button>`
+      ).join('');
+    }
+
+    function renderCounter() {
+      const qs = visibleQuestions();
+      const shown = qs.filter(q => revealedIds.has(q.id)).length;
+      document.getElementById('counter').textContent =
+        `${shown} / ${qs.length} answers shown`;
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('question-list');
+      const qs = visibleQuestions();
+
+      if (qs.length === 0) {
+        container.innerHTML = '<p class="empty">No questions in this category.</p>';
+        return;
+      }
+
+      container.innerHTML = qs.map((q, i) => {
+        const revealed = revealedIds.has(q.id);
+        return `
+          <div class="question-card" data-id="${q.id}">
+            <div class="question-inner">
+              <span class="q-number">${i + 1}.</span>
+              <div class="q-content">
+                <span class="badge ${badgeClass(q.category)}">${q.category}</span>
+                <div class="q-text">${q.question}</div>
+                <button class="reveal-btn${revealed ? ' revealed' : ''}"
+                        onclick="toggleAnswer(${q.id}, this)">
+                  ${revealed ? 'Hide answer' : 'Show answer'}
+                </button>
+                <div class="answer-block${revealed ? ' visible' : ''}" id="ans-${q.id}">
+                  <div class="answer-label">Answer</div>
+                  <div class="answer-text">${q.answer}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      renderMathInElement(container, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true  },
+          { left: '$',  right: '$',  display: false },
+        ],
+        throwOnError: false
+      });
+    }
+
+    /* ── Events ─────────────────────────────── */
+    window.setFilter = function(cat) {
+      activeFilter = cat;
+      renderFilters();
+      renderQuestions();
+      renderCounter();
+    };
+
+    window.toggleAnswer = function(id, btn) {
+      const block = document.getElementById(`ans-${id}`);
+      if (revealedIds.has(id)) {
+        revealedIds.delete(id);
+        block.classList.remove('visible');
+        btn.classList.remove('revealed');
+        btn.textContent = 'Show answer';
+      } else {
+        revealedIds.add(id);
+        block.classList.add('visible');
+        btn.classList.add('revealed');
+        btn.textContent = 'Hide answer';
+      }
+      renderCounter();
+    };
+
+    /* ── Init ───────────────────────────────── */
+    async function init() {
+      const params = new URLSearchParams(window.location.search);
+      const topicSlug = params.get('topic');
+      const setId     = params.get('set');
+      const container = document.getElementById('question-list');
+
+      try {
+        // Load manifest (for breadcrumb + topic color) and question script in parallel
+        const [manifest] = await Promise.all([
+          fetch('manifest.json').then(r => r.json()),
+          loadScript(`data/${topicSlug}/${setId}.js`)
+        ]);
+
+        // PAPER and QUESTIONS are now globals (var) set by the loaded script
+        const paper = window.PAPER || {};
+
+        const topicData = manifest.topics.find(t => t.slug === topicSlug);
+        const topicColor = topicData?.color ?? '#6366f1';
+        const topicTitle = topicData?.title ?? topicSlug;
+
+        // Apply topic color
+        document.documentElement.style.setProperty('--topic-color', topicColor);
+
+        // Breadcrumbs
+        const bcTopicLink = document.getElementById('bc-topic-link');
+        bcTopicLink.textContent = topicTitle;
+        bcTopicLink.href = `topic.html?slug=${topicSlug}`;
+        document.getElementById('bc-set').textContent =
+          'Set ' + setId.replace('set-', '');
+
+        // Title
+        const title = paper.title || `${topicTitle} — ${setId}`;
+        document.getElementById('practice-title').textContent = title;
+        document.title = `${title} — Maths Practice`;
+
+        // Build category list from the globally loaded QUESTIONS
+        CATEGORIES = ['All', ...new Set(window.QUESTIONS.map(q => q.category))];
+
+        renderFilters();
+        renderQuestions();
+        renderCounter();
+
+      } catch (err) {
+        document.getElementById('practice-title').textContent = 'Error';
+        container.innerHTML =
+          `<p class="empty">Could not load this question set.<br><small>${err.message}</small></p>`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

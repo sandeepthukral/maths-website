@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic — Maths Practice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page">
+    <nav class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current" id="bc-topic">…</span>
+    </nav>
+
+    <div id="topic-banner"></div>
+    <div id="sets-list"><p class="loading">Loading…</p></div>
+  </div>
+
+  <script>
+    async function init() {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('slug');
+
+      const setsList = document.getElementById('sets-list');
+
+      try {
+        const manifest = await fetch('manifest.json').then(r => r.json());
+        const topic = manifest.topics.find(t => t.slug === slug);
+
+        if (!topic) {
+          setsList.innerHTML = '<p class="empty">Topic not found.</p>';
+          return;
+        }
+
+        // Apply topic color as CSS variable
+        document.documentElement.style.setProperty('--topic-color', topic.color);
+
+        document.title = `${topic.title} — Maths Practice`;
+        document.getElementById('bc-topic').textContent = topic.title;
+
+        document.getElementById('topic-banner').innerHTML = `
+          <div class="topic-banner">
+            <div class="topic-banner__stripe"></div>
+            <div class="topic-banner__content">
+              <h1>${topic.title}</h1>
+              <p>${topic.description}</p>
+            </div>
+          </div>
+        `;
+
+        if (topic.sets.length === 0) {
+          setsList.innerHTML = '<p class="empty">No sets yet for this topic.</p>';
+          return;
+        }
+
+        setsList.innerHTML = topic.sets.map(set => {
+          const num = set.id.replace('set-', '');
+          const badges = set.categories
+            .map(c => `<span class="badge badge-${c.replace(/\s+/g, '-')}">${c}</span>`)
+            .join('');
+          return `
+            <a class="set-card fade-in"
+               href="practice.html?topic=${topic.slug}&set=${set.id}">
+              <div class="set-card__num">${num}</div>
+              <div class="set-card__body">
+                <div class="set-card__title">${set.title}</div>
+                <div class="set-card__meta">
+                  <span class="set-card__q-count">${set.questionCount} questions</span>
+                  ${badges}
+                </div>
+              </div>
+              <div class="set-card__arrow">→</div>
+            </a>
+          `;
+        }).join('');
+
+      } catch (err) {
+        setsList.innerHTML = `<p class="empty">Failed to load topic.<br><small>${err.message}</small></p>`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

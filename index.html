@@ -6,298 +6,53 @@
   <title>Maths Practice</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
-  <script src="questions.js"></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: #f2f4f8;
-      color: #1e293b;
-      line-height: 1.6;
-      padding: 2.5rem 1rem 4rem;
-      min-height: 100vh;
-    }
-
-    #app { max-width: 780px; margin: 0 auto; }
-
-    /* ── Header ─────────────────────────────── */
-    header { margin-bottom: 2rem; }
-
-    h1 {
-      font-size: 1.375rem;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 1.25rem;
-    }
-
-    .controls-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .filter-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-
-    .filter-btn {
-      padding: 0.3rem 0.85rem;
-      border-radius: 9999px;
-      border: 1.5px solid #dde1e9;
-      background: white;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: #64748b;
-      transition: all 0.14s ease;
-    }
-    .filter-btn:hover { border-color: #94a3b8; color: #334155; }
-    .filter-btn.active {
-      background: #1e293b;
-      border-color: #1e293b;
-      color: white;
-    }
-
-    .counter {
-      font-size: 0.8rem;
-      color: #94a3b8;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-
-    /* ── Question cards ──────────────────────── */
-    .question-card {
-      background: white;
-      border-radius: 12px;
-      padding: 1.375rem 1.5rem;
-      margin-bottom: 0.75rem;
-      border: 1px solid #e4e8f0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-
-    .question-inner {
-      display: grid;
-      grid-template-columns: 2rem 1fr;
-      gap: 0;
-    }
-
-    .q-number {
-      font-size: 0.875rem;
-      color: #94a3b8;
-      font-weight: 600;
-      padding-top: 0.05rem;
-    }
-
-    /* ── Category badges ─────────────────────── */
-    .badge {
-      display: inline-block;
-      padding: 0.15rem 0.55rem;
-      border-radius: 9999px;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      margin-bottom: 0.55rem;
-    }
-    .badge-Express   { background: #dcfce7; color: #15803d; }
-    .badge-Log-laws  { background: #f3e8ff; color: #7e22ce; }
-    .badge-Solve     { background: #dbeafe; color: #1d4ed8; }
-    .badge-Rewrite   { background: #fff7ed; color: #c2410c; }
-
-    /* ── Question text ───────────────────────── */
-    .q-text {
-      font-size: 0.9375rem;
-      line-height: 1.8;
-      color: #1e293b;
-      margin-bottom: 1rem;
-    }
-
-    /* ── Reveal button ───────────────────────── */
-    .reveal-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      padding: 0.375rem 0.875rem;
-      border-radius: 7px;
-      border: 1.5px solid #e2e8f0;
-      background: white;
-      color: #475569;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 0.8125rem;
-      font-weight: 500;
-      transition: all 0.14s ease;
-    }
-    .reveal-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
-    .reveal-btn.revealed {
-      background: #f0fdf4;
-      border-color: #4ade80;
-      color: #16a34a;
-    }
-
-    /* ── Answer block ────────────────────────── */
-    .answer-block {
-      display: none;
-      margin-top: 1rem;
-      padding: 0.875rem 1rem;
-      border-radius: 8px;
-      background: #f8fafc;
-      border-left: 3px solid #818cf8;
-    }
-    .answer-block.visible {
-      display: block;
-      animation: slideIn 0.18s ease;
-    }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-5px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .answer-label {
-      font-size: 0.675rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #818cf8;
-      margin-bottom: 0.4rem;
-    }
-
-    .answer-text {
-      font-size: 0.9375rem;
-      color: #334155;
-      line-height: 1.7;
-    }
-
-    /* ── KaTeX tweaks ────────────────────────── */
-    .katex { font-size: 1em; }
-    .katex-display { margin: 0.6em 0; overflow-x: auto; }
-
-    /* ── Empty state ─────────────────────────── */
-    .empty {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: #94a3b8;
-      font-size: 0.9375rem;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="app">
-    <header>
-      <h1 id="paper-title">Maths Practice</h1>
-      <div class="controls-row">
-        <div class="filter-tabs" id="filter-tabs"></div>
-        <span class="counter" id="counter">0 / 0 answers shown</span>
-      </div>
-    </header>
-    <main id="question-list"></main>
+  <div class="page">
+    <div class="page-head">
+      <h1 class="page-title">Maths Practice</h1>
+      <p class="page-subtitle">Choose a topic to get started</p>
+    </div>
+    <div class="cards-grid" id="topics-grid">
+      <p class="loading">Loading topics…</p>
+    </div>
   </div>
 
   <script>
-    const CATEGORIES = ['All', ...new Set(QUESTIONS.map(q => q.category))];
-    let activeFilter = 'All';
-    const revealedIds = new Set();
+    async function init() {
+      const grid = document.getElementById('topics-grid');
+      try {
+        const manifest = await fetch('manifest.json').then(r => r.json());
 
-    function badgeClass(cat) {
-      return 'badge-' + cat.replace(/\s+/g, '-');
-    }
+        if (manifest.topics.length === 0) {
+          grid.innerHTML = '<p class="empty">No topics found. Add a folder to data/ and run generate_manifest.py.</p>';
+          return;
+        }
 
-    function visibleQuestions() {
-      return activeFilter === 'All'
-        ? QUESTIONS
-        : QUESTIONS.filter(q => q.category === activeFilter);
-    }
-
-    function renderFilters() {
-      document.getElementById('filter-tabs').innerHTML = CATEGORIES.map(cat =>
-        `<button class="filter-btn${cat === activeFilter ? ' active' : ''}"
-                 onclick="setFilter('${cat}')">${cat}</button>`
-      ).join('');
-    }
-
-    function renderCounter() {
-      const qs = visibleQuestions();
-      const shown = qs.filter(q => revealedIds.has(q.id)).length;
-      document.getElementById('counter').textContent =
-        `${shown} / ${qs.length} answers shown`;
-    }
-
-    function renderQuestions() {
-      const container = document.getElementById('question-list');
-      const qs = visibleQuestions();
-
-      if (qs.length === 0) {
-        container.innerHTML = '<p class="empty">No questions in this category.</p>';
-        return;
-      }
-
-      container.innerHTML = qs.map((q, i) => {
-        const revealed = revealedIds.has(q.id);
-        return `
-          <div class="question-card" data-id="${q.id}">
-            <div class="question-inner">
-              <span class="q-number">${i + 1}.</span>
-              <div class="q-content">
-                <span class="badge ${badgeClass(q.category)}">${q.category}</span>
-                <div class="q-text">${q.question}</div>
-                <button class="reveal-btn${revealed ? ' revealed' : ''}"
-                        onclick="toggleAnswer(${q.id}, this)">
-                  ${revealed ? 'Hide answer' : 'Show answer'}
-                </button>
-                <div class="answer-block${revealed ? ' visible' : ''}" id="ans-${q.id}">
-                  <div class="answer-label">Answer</div>
-                  <div class="answer-text">${q.answer}</div>
+        grid.innerHTML = manifest.topics.map(topic => {
+          const setWord = topic.sets.length === 1 ? 'set' : 'sets';
+          return `
+            <a class="topic-card fade-in" href="topic.html?slug=${topic.slug}"
+               style="--topic-color: ${topic.color}">
+              <div class="topic-card__stripe"></div>
+              <div class="topic-card__body">
+                <h2 class="topic-card__title">${topic.title}</h2>
+                <p class="topic-card__desc">${topic.description}</p>
+                <div class="topic-card__footer">
+                  <span class="topic-card__count">${topic.sets.length} ${setWord}</span>
+                  <span class="topic-card__arrow">→</span>
                 </div>
               </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      renderMathInElement(container, {
-        delimiters: [
-          { left: '$$', right: '$$', display: true  },
-          { left: '$',  right: '$',  display: false },
-        ],
-        throwOnError: false
-      });
-    }
-
-    window.setFilter = function(cat) {
-      activeFilter = cat;
-      renderFilters();
-      renderQuestions();
-      renderCounter();
-    };
-
-    window.toggleAnswer = function(id, btn) {
-      const block = document.getElementById(`ans-${id}`);
-      if (revealedIds.has(id)) {
-        revealedIds.delete(id);
-        block.classList.remove('visible');
-        btn.classList.remove('revealed');
-        btn.textContent = 'Show answer';
-      } else {
-        revealedIds.add(id);
-        block.classList.add('visible');
-        btn.classList.add('revealed');
-        btn.textContent = 'Hide answer';
+            </a>
+          `;
+        }).join('');
+      } catch (err) {
+        grid.innerHTML = `<p class="empty">Could not load manifest.json — make sure the server is running.<br><small>${err.message}</small></p>`;
       }
-      renderCounter();
-    };
-
-    if (typeof PAPER !== 'undefined' && PAPER.title) {
-      document.getElementById('paper-title').textContent = PAPER.title;
-      document.title = PAPER.title;
     }
-    renderFilters();
-    renderQuestions();
-    renderCounter();
+
+    init();
   </script>
 </body>
 </html>
