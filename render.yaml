@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: maths-website
+    env: static
+    buildCommand: node generate_manifest.js
+    staticPublishPath: .
