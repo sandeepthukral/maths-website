@@ -69,16 +69,20 @@ Every `git push` to `main` triggers a redeploy automatically. `manifest.json` is
 
 ```
 maths-website/
-├── index.html              # Home page — topic grid
+├── index.html              # Home page — grade grid
+├── grade.html              # Grade page — topic grid
 ├── topic.html              # Topic page — set list
 ├── practice.html           # Practice page — questions
+├── test.html               # Practice Test — randomised 10-question test
 ├── styles.css              # Shared styles
 ├── server.js               # Local dev server (Node.js)
 ├── generate_manifest.js    # Builds manifest.json from data/
 ├── render.yaml             # Render deployment config
 └── data/
-    └── <topic-slug>/
-        ├── meta.json       # Topic metadata
-        ├── set-01.js       # Question set
-        └── set-02.js       # …
+    └── <grade-slug>/
+        ├── meta.json       # Grade metadata
+        └── <topic-slug>/
+            ├── meta.json   # Topic metadata
+            ├── set-01.js   # Question set
+            └── set-02.js   # …
 ```
