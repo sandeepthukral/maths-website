@@ -1,0 +1,54 @@
+<svg viewBox="0 0 330 190" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <!-- Axes -->
+  <line x1="35" y1="165" x2="315" y2="165" stroke="#334155" stroke-width="1.5"/>
+  <line x1="35" y1="15"  x2="35"  y2="165" stroke="#334155" stroke-width="1.5"/>
+  <!-- Arrowheads -->
+  <polygon points="315,162 315,168 323,165" fill="#334155"/>
+  <polygon points="32,15 38,15 35,8" fill="#334155"/>
+
+  <!-- Grid lines (light) -->
+  <line x1="35" y1="90" x2="315" y2="90" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="35" y1="40" x2="315" y2="40" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="35" y1="140" x2="315" y2="140" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- h=8 dashed line (teal) -->
+  <line x1="35" y1="116" x2="315" y2="116" stroke="#0d9488" stroke-width="1.2" stroke-dasharray="5 3"/>
+  <text x="320" y="119" font-size="10" fill="#0d9488">h=8</text>
+
+  <!-- Sine curve: h(t)=6+4sin(πt/12), period=24, 0≤t≤24 -->
+  <!-- Scale: x: t=0→35, t=24→300 (265/24≈11.04px/unit) -->
+  <!--        y: h=0→165, h=12→15 (150/12=12.5px/unit, origin at bottom) -->
+  <!-- y = 165 - (h/12)*150 -->
+  <!-- Key points: (0,6)→y=90, (6,10)→y=40, (12,6)→y=90, (18,2)→y=140, (24,6)→y=90 -->
+  <path d="M 35,90 C 58,90 70,40 91,40 C 112,40 124,90 147,90 C 170,90 182,140 203,140 C 224,140 236,90 259,90"
+        fill="none" stroke="#7c3aed" stroke-width="2.2"/>
+
+  <!-- x-axis ticks and labels -->
+  <line x1="35"  y1="163" x2="35"  y2="167" stroke="#334155" stroke-width="1"/>
+  <line x1="91"  y1="163" x2="91"  y2="167" stroke="#334155" stroke-width="1"/>
+  <line x1="147" y1="163" x2="147" y2="167" stroke="#334155" stroke-width="1"/>
+  <line x1="203" y1="163" x2="203" y2="167" stroke="#334155" stroke-width="1"/>
+  <line x1="259" y1="163" x2="259" y2="167" stroke="#334155" stroke-width="1"/>
+  <text x="35"  y="177" text-anchor="middle" font-size="10" fill="#475569">0</text>
+  <text x="91"  y="177" text-anchor="middle" font-size="10" fill="#475569">6</text>
+  <text x="147" y="177" text-anchor="middle" font-size="10" fill="#475569">12</text>
+  <text x="203" y="177" text-anchor="middle" font-size="10" fill="#475569">18</text>
+  <text x="259" y="177" text-anchor="middle" font-size="10" fill="#475569">24</text>
+
+  <!-- y-axis ticks and labels -->
+  <line x1="33" y1="40"  x2="37" y2="40"  stroke="#334155" stroke-width="1"/>
+  <line x1="33" y1="90"  x2="37" y2="90"  stroke="#334155" stroke-width="1"/>
+  <line x1="33" y1="140" x2="37" y2="140" stroke="#334155" stroke-width="1"/>
+  <text x="30" y="43"  text-anchor="end" font-size="10" fill="#475569">10</text>
+  <text x="30" y="93"  text-anchor="end" font-size="10" fill="#475569">6</text>
+  <text x="30" y="143" text-anchor="end" font-size="10" fill="#475569">2</text>
+
+  <!-- Axis labels -->
+  <text x="320" y="169" font-size="11" fill="#334155">t</text>
+  <text x="30"  y="10"  font-size="11" fill="#334155">h</text>
+  <text x="175" y="187" text-anchor="middle" font-size="10" fill="#64748b">t (hours)</text>
+
+  <!-- Max/min dots -->
+  <circle cx="91"  cy="40"  r="3" fill="#0d9488"/>
+  <circle cx="203" cy="140" r="3" fill="#0d9488"/>
+</svg>

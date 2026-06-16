@@ -1,0 +1,42 @@
+<svg viewBox="0 0 340 220" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <!-- Root node (first die) -->
+  <circle cx="30" cy="110" r="4" fill="#334155"/>
+
+  <!-- First die: branch to "six" -->
+  <line x1="34" y1="108" x2="115" y2="45" stroke="#334155" stroke-width="1.3"/>
+  <text x="62" y="65" font-size="11" fill="#0369a1" text-anchor="middle">1/6</text>
+  <text x="120" y="42" font-size="12" font-weight="600" fill="#334155">6</text>
+
+  <!-- First die: branch to "not 6" -->
+  <line x1="34" y1="112" x2="115" y2="175" stroke="#334155" stroke-width="1.3"/>
+  <text x="62" y="158" font-size="11" fill="#475569" text-anchor="middle">5/6</text>
+  <text x="120" y="178" font-size="12" font-weight="600" fill="#334155">not 6</text>
+
+  <!-- From "six": branch to six -->
+  <line x1="138" y1="42" x2="210" y2="14" stroke="#334155" stroke-width="1.3"/>
+  <text x="168" y="20" font-size="11" fill="#0369a1" text-anchor="middle">1/6</text>
+  <text x="215" y="14" font-size="11" font-weight="600" fill="#334155">6</text>
+  <text x="260" y="14" font-size="10" fill="#7c3aed">(6,6) — 1/36</text>
+
+  <!-- From "six": branch to not six -->
+  <line x1="138" y1="46" x2="210" y2="72" stroke="#334155" stroke-width="1.3"/>
+  <text x="168" y="72" font-size="11" fill="#475569" text-anchor="middle">5/6</text>
+  <text x="215" y="75" font-size="11" font-weight="600" fill="#334155">not 6</text>
+  <text x="260" y="75" font-size="10" fill="#64748b">(6,n) — 5/36</text>
+
+  <!-- From "not six": branch to six -->
+  <line x1="148" y1="173" x2="210" y2="148" stroke="#334155" stroke-width="1.3"/>
+  <text x="168" y="150" font-size="11" fill="#0369a1" text-anchor="middle">1/6</text>
+  <text x="215" y="148" font-size="11" font-weight="600" fill="#334155">6</text>
+  <text x="260" y="148" font-size="10" fill="#64748b">(n,6) — 5/36</text>
+
+  <!-- From "not six": branch to not six -->
+  <line x1="148" y1="177" x2="210" y2="205" stroke="#334155" stroke-width="1.3"/>
+  <text x="168" y="205" font-size="11" fill="#475569" text-anchor="middle">5/6</text>
+  <text x="215" y="208" font-size="11" font-weight="600" fill="#334155">not 6</text>
+  <text x="260" y="208" font-size="10" fill="#64748b">(n,n) — 25/36</text>
+
+  <!-- Axis labels -->
+  <text x="30" y="220" font-size="10" fill="#64748b">Die 1</text>
+  <text x="118" y="220" font-size="10" fill="#64748b">Die 2</text>
+</svg>
