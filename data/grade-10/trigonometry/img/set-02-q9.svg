@@ -1,0 +1,25 @@
+<svg viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <!-- Equilateral triangle ABC: A(160,18) B(100,122) C(220,122) M(160,122) -->
+  <line x1="160" y1="18"  x2="100" y2="122" stroke="#334155" stroke-width="1.5"/>
+  <line x1="160" y1="18"  x2="220" y2="122" stroke="#334155" stroke-width="1.5"/>
+  <line x1="100" y1="122" x2="220" y2="122" stroke="#334155" stroke-width="1.5"/>
+  <!-- Median AM (dashed) -->
+  <line x1="160" y1="18"  x2="160" y2="122" stroke="#475569" stroke-width="1.2" stroke-dasharray="5 3"/>
+  <!-- Midpoint M -->
+  <circle cx="160" cy="122" r="2.5" fill="#475569"/>
+  <!-- Tick marks on BM and MC (equal halves) -->
+  <line x1="126" y1="118" x2="126" y2="126" stroke="#475569" stroke-width="1.2"/>
+  <line x1="194" y1="118" x2="194" y2="126" stroke="#475569" stroke-width="1.2"/>
+  <!-- Vertex labels -->
+  <text x="153" y="10"  font-size="13" font-weight="700" fill="#1e293b">A</text>
+  <text x="83"  y="134" font-size="13" font-weight="700" fill="#1e293b">B</text>
+  <text x="223" y="134" font-size="13" font-weight="700" fill="#1e293b">C</text>
+  <text x="163" y="138" font-size="12" font-weight="700" fill="#1e293b">M</text>
+  <!-- Side label (teal — all sides 8 cm) -->
+  <text x="118" y="73"  font-size="11" fill="#0d9488" transform="rotate(-60 118 73)">8 cm</text>
+  <text x="196" y="70"  font-size="11" fill="#0d9488" transform="rotate(60 196 70)">8 cm</text>
+  <text x="157" y="138" font-size="0" fill="none"/>
+  <text x="155" y="150" text-anchor="middle" font-size="11" fill="#0d9488">8 cm</text>
+  <!-- AM unknown (violet) -->
+  <text x="168" y="72"  font-size="11" fill="#7c3aed" font-style="italic">AM = ?</text>
+</svg>

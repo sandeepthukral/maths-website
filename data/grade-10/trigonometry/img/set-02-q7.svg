@@ -1,0 +1,26 @@
+<svg viewBox="0 0 320 215" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <!-- P(150,112), Ship A bearing 000° 3km→A(150,58), Ship B bearing 060° 8km→B(275,40) -->
+  <!-- North arrow -->
+  <line x1="150" y1="112" x2="150" y2="32" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 3"/>
+  <polygon points="150,28 146,38 154,38" fill="#94a3b8"/>
+  <text x="154" y="28" font-size="11" fill="#64748b">N</text>
+  <!-- Bearing arc 060° at P -->
+  <path d="M 150 92 A 20 20 0 0 1 167 102" fill="none" stroke="#475569" stroke-width="1"/>
+  <text x="154" y="90" font-size="10" fill="#475569">60°</text>
+  <!-- Line P→A (000°, 3 km) -->
+  <line x1="150" y1="112" x2="150" y2="58"  stroke="#334155" stroke-width="1.5"/>
+  <circle cx="150" cy="58" r="3" fill="#334155"/>
+  <text x="154" y="55"  font-size="13" font-weight="700" fill="#1e293b">A</text>
+  <text x="156" y="88"  font-size="10" fill="#0d9488">3 km</text>
+  <!-- Line P→B (060°, 8 km) -->
+  <line x1="150" y1="112" x2="275" y2="40"  stroke="#334155" stroke-width="1.5"/>
+  <circle cx="275" cy="40"  r="3" fill="#334155"/>
+  <text x="278" y="45"  font-size="13" font-weight="700" fill="#1e293b">B</text>
+  <text x="206" y="68"  font-size="10" fill="#0d9488">8 km</text>
+  <!-- P label -->
+  <circle cx="150" cy="112" r="3" fill="#334155"/>
+  <text x="136" y="114" font-size="13" font-weight="700" fill="#1e293b">P</text>
+  <!-- Dashed line A→B (unknown) -->
+  <line x1="150" y1="58"  x2="275" y2="40"  stroke="#7c3aed" stroke-width="1.2" stroke-dasharray="5 3"/>
+  <text x="218" y="44"  font-size="12" fill="#7c3aed" font-style="italic">? km</text>
+</svg>

@@ -1,0 +1,18 @@
+<svg viewBox="0 0 320 215" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <!-- Triangle: A(60,120) B(110,33) C(90,172) -->
+  <!-- ∠A=120°, AB=5, AC=3, BC=7 -->
+  <line x1="60"  y1="120" x2="110" y2="33"  stroke="#334155" stroke-width="1.5"/>
+  <line x1="60"  y1="120" x2="90"  y2="172" stroke="#334155" stroke-width="1.5"/>
+  <line x1="110" y1="33"  x2="90"  y2="172" stroke="#334155" stroke-width="1.5"/>
+  <!-- Vertex label A -->
+  <text x="42"  y="126" font-size="13" font-weight="700" fill="#1e293b">A</text>
+  <text x="113" y="30"  font-size="13" font-weight="700" fill="#1e293b">B</text>
+  <text x="87"  y="187" font-size="13" font-weight="700" fill="#1e293b">C</text>
+  <!-- Angle at A = 120° -->
+  <text x="68"  y="117" font-size="11" fill="#475569">120°</text>
+  <!-- Given sides (teal) -->
+  <text x="72"  y="68"  font-size="11" fill="#0d9488" transform="rotate(-60 72 68)">5 cm</text>
+  <text x="62"  y="153" font-size="11" fill="#0d9488" transform="rotate(55 62 153)">3 cm</text>
+  <!-- Unknown BC (violet) -->
+  <text x="110" y="112" font-size="11" fill="#7c3aed" font-style="italic">? cm</text>
+</svg>

@@ -1,0 +1,19 @@
+<svg viewBox="0 0 320 195" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <!-- Triangle XYZ: X(40,165) Y(168,165) Z(123,82) -->
+  <!-- ∠X=30°, XY=8, XZ=6, Area=12 -->
+  <line x1="40"  y1="165" x2="168" y2="165" stroke="#334155" stroke-width="1.5"/>
+  <line x1="40"  y1="165" x2="123" y2="82"  stroke="#334155" stroke-width="1.5"/>
+  <line x1="168" y1="165" x2="123" y2="82"  stroke="#334155" stroke-width="1.5"/>
+  <!-- Vertex labels -->
+  <text x="23"  y="171" font-size="13" font-weight="700" fill="#1e293b">X</text>
+  <text x="116" y="73"  font-size="13" font-weight="700" fill="#1e293b">Z</text>
+  <text x="171" y="171" font-size="13" font-weight="700" fill="#1e293b">Y</text>
+  <!-- Angle arc at X (30°) -->
+  <path d="M 62 165 A 22 22 0 0 0 58 144" fill="none" stroke="#475569" stroke-width="1"/>
+  <text x="63"  y="157" font-size="11" fill="#475569">30°</text>
+  <!-- Given sides (teal) -->
+  <text x="100" y="181" text-anchor="middle" font-size="11" fill="#0d9488">8 cm</text>
+  <text x="68"  y="116" font-size="11" fill="#0d9488" transform="rotate(-52 68 116)">6 cm</text>
+  <!-- Area label (violet) -->
+  <text x="118" y="140" text-anchor="middle" font-size="11" fill="#7c3aed" font-style="italic">Area = ?</text>
+</svg>

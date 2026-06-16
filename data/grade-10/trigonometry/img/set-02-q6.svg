@@ -1,0 +1,19 @@
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <!-- Triangle ABC: A(40,160) B(80,91) C(160,160) -->
+  <!-- ∠BAC=60°, AB=4, AC=6 -->
+  <line x1="40"  y1="160" x2="80"  y2="91"  stroke="#334155" stroke-width="1.5"/>
+  <line x1="40"  y1="160" x2="160" y2="160" stroke="#334155" stroke-width="1.5"/>
+  <line x1="80"  y1="91"  x2="160" y2="160" stroke="#334155" stroke-width="1.5"/>
+  <!-- Vertex labels -->
+  <text x="23"  y="166" font-size="13" font-weight="700" fill="#1e293b">A</text>
+  <text x="73"  y="82"  font-size="13" font-weight="700" fill="#1e293b">B</text>
+  <text x="163" y="166" font-size="13" font-weight="700" fill="#1e293b">C</text>
+  <!-- Angle arc at A (60°) -->
+  <path d="M 62 160 A 22 22 0 0 0 51 140" fill="none" stroke="#475569" stroke-width="1"/>
+  <text x="63"  y="152" font-size="11" fill="#475569">60°</text>
+  <!-- Given sides (teal) -->
+  <text x="50"  y="119" font-size="11" fill="#0d9488" transform="rotate(-60 50 119)">4 cm</text>
+  <text x="96"  y="174" text-anchor="middle" font-size="11" fill="#0d9488">6 cm</text>
+  <!-- Area unknown (violet) -->
+  <text x="100" y="138" text-anchor="middle" font-size="11" fill="#7c3aed" font-style="italic">Area = ?</text>
+</svg>
