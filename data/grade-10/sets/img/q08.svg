@@ -1,0 +1,44 @@
+<svg viewBox="0 0 310 215" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <!-- Universe rectangle -->
+  <rect x="5" y="5" width="300" height="205" rx="6" fill="none" stroke="#334155" stroke-width="1.8"/>
+  <text x="14" y="22" font-size="12" font-weight="700" fill="#334155">U</text>
+
+  <!-- Circle C (Coffee, top-left) -->
+  <circle cx="115" cy="95" r="72" fill="#e0f2fe" fill-opacity="0.45" stroke="#0d9488" stroke-width="1.8"/>
+  <text x="50" y="36" font-size="12" font-weight="700" fill="#0d9488">C</text>
+
+  <!-- Circle T (Tea, top-right) -->
+  <circle cx="200" cy="95" r="72" fill="#fdf4ff" fill-opacity="0.45" stroke="#7c3aed" stroke-width="1.8"/>
+  <text x="248" y="36" font-size="12" font-weight="700" fill="#7c3aed">T</text>
+
+  <!-- Circle J (Juice, bottom) -->
+  <circle cx="157" cy="150" r="72" fill="#fef9c3" fill-opacity="0.45" stroke="#b45309" stroke-width="1.8"/>
+  <text x="152" y="208" font-size="12" font-weight="700" fill="#b45309">J</text>
+
+  <!-- C only: 15 (= C∩J only, given equal) -->
+  <text x="62" y="90" text-anchor="middle" font-size="13" fill="#334155">15</text>
+
+  <!-- T only: 6 -->
+  <text x="252" y="90" text-anchor="middle" font-size="13" fill="#334155">6</text>
+
+  <!-- J only: 3 -->
+  <text x="157" y="185" text-anchor="middle" font-size="13" fill="#334155">3</text>
+
+  <!-- C∩T only: ? -->
+  <text x="157" y="62" text-anchor="middle" font-size="14" font-weight="700" fill="#7c3aed">?</text>
+
+  <!-- C∩J only: 15 -->
+  <text x="90" y="155" text-anchor="middle" font-size="13" fill="#334155">15</text>
+
+  <!-- T∩J only: ? -->
+  <text x="224" y="152" text-anchor="middle" font-size="14" font-weight="700" fill="#7c3aed">?</text>
+
+  <!-- C∩T∩J: 25 -->
+  <text x="157" y="115" text-anchor="middle" font-size="13" fill="#334155">25</text>
+
+  <!-- None: 1 -->
+  <text x="255" y="190" font-size="11" fill="#64748b">1 likes none</text>
+
+  <!-- Note: k = total C∩T -->
+  <text x="155" y="14" text-anchor="middle" font-size="10" fill="#7c3aed">C∩J total = 40 · C∩T total = k</text>
+</svg>

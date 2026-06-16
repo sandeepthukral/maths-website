@@ -1,0 +1,45 @@
+<svg viewBox="0 0 310 215" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <!-- Universe rectangle -->
+  <rect x="5" y="5" width="300" height="205" rx="6" fill="none" stroke="#334155" stroke-width="1.8"/>
+  <text x="14" y="22" font-size="12" font-weight="700" fill="#334155">U</text>
+
+  <!-- Circle A (top-left) -->
+  <circle cx="115" cy="95" r="72" fill="#e0f2fe" fill-opacity="0.45" stroke="#0d9488" stroke-width="1.8"/>
+  <text x="55" y="38" font-size="13" font-weight="700" fill="#0d9488">A</text>
+
+  <!-- Circle B (top-right) -->
+  <circle cx="200" cy="95" r="72" fill="#fdf4ff" fill-opacity="0.45" stroke="#7c3aed" stroke-width="1.8"/>
+  <text x="248" y="38" font-size="13" font-weight="700" fill="#7c3aed">B</text>
+
+  <!-- Circle C (bottom) -->
+  <circle cx="157" cy="150" r="72" fill="#fef9c3" fill-opacity="0.45" stroke="#b45309" stroke-width="1.8"/>
+  <text x="152" y="208" font-size="13" font-weight="700" fill="#b45309">C</text>
+
+  <!-- A only: {2, 10} -->
+  <text x="62" y="82" text-anchor="middle" font-size="11" fill="#334155">2</text>
+  <text x="62" y="98" text-anchor="middle" font-size="11" fill="#334155">10</text>
+
+  <!-- B only: {3, 9} -->
+  <text x="252" y="82" text-anchor="middle" font-size="11" fill="#334155">3</text>
+  <text x="252" y="98" text-anchor="middle" font-size="11" fill="#334155">9</text>
+
+  <!-- C only: {} (empty) -->
+
+  <!-- A∩B only: {6} (top-middle overlap, above C) -->
+  <text x="157" y="62" text-anchor="middle" font-size="11" fill="#334155">6</text>
+
+  <!-- A∩C only: {4, 8} (left-bottom overlap) -->
+  <text x="95" y="148" text-anchor="middle" font-size="11" fill="#334155">4</text>
+  <text x="95" y="163" text-anchor="middle" font-size="11" fill="#334155">8</text>
+
+  <!-- B∩C only: {} (empty) -->
+
+  <!-- A∩B∩C: {12} (centre) -->
+  <text x="157" y="118" text-anchor="middle" font-size="12" fill="#334155">12</text>
+
+  <!-- Outside: {1, 5, 7, 11} -->
+  <text x="18" y="185" font-size="11" fill="#334155">1</text>
+  <text x="38" y="185" font-size="11" fill="#334155">5</text>
+  <text x="260" y="185" font-size="11" fill="#334155">7</text>
+  <text x="280" y="185" font-size="11" fill="#334155">11</text>
+</svg>
