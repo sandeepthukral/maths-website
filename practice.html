@@ -98,6 +98,7 @@
               <div class="q-content">
                 <span class="badge ${badgeClass(q.category)}">${q.category}</span>
                 <div class="q-text">${q.question}</div>
+                ${q.diagram ? `<img src="${q.diagram}" class="q-diagram" alt="">` : ''}
                 <button class="reveal-btn${revealed ? ' revealed' : ''}"
                         onclick="toggleAnswer(${q.id}, this)">
                   ${revealed ? 'Hide answer' : 'Show answer'}

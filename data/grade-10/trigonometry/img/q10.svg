@@ -1,0 +1,37 @@
+<svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <!-- Triangular pyramid ABCD -->
+  <!-- Base: A(75,185) B(245,185) C(175,108) -->
+  <!-- Apex: D(152,22) -->
+
+  <!-- Hidden base edge BC (dashed) -->
+  <line x1="245" y1="185" x2="175" y2="108" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4 3"/>
+
+  <!-- Base edges AB, AC -->
+  <line x1="75"  y1="185" x2="245" y2="185" stroke="#334155" stroke-width="1.5"/>
+  <line x1="75"  y1="185" x2="175" y2="108" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- Lateral edges DA, DB, DC -->
+  <line x1="152" y1="22"  x2="75"  y2="185" stroke="#334155" stroke-width="1.5"/>
+  <line x1="152" y1="22"  x2="245" y2="185" stroke="#334155" stroke-width="1.5"/>
+  <line x1="152" y1="22"  x2="175" y2="108" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- Vertex labels -->
+  <text x="58"  y="191" font-size="13" font-weight="700" fill="#1e293b">A</text>
+  <text x="248" y="191" font-size="13" font-weight="700" fill="#1e293b">B</text>
+  <text x="178" y="105" font-size="13" font-weight="700" fill="#1e293b">C</text>
+  <text x="145" y="14"  font-size="13" font-weight="700" fill="#1e293b">D</text>
+
+  <!-- Measurements in base triangle ABC (teal = given) -->
+  <text x="155" y="200" text-anchor="middle" font-size="11" fill="#0d9488">AC = 18 cm</text>
+  <text x="86"  y="170" font-size="10" fill="#475569">28°</text>
+  <text x="205" y="178" font-size="10" fill="#475569">105°</text>
+
+  <!-- Face DBC angle -->
+  <text x="185" y="128" font-size="10" fill="#475569">45°</text>
+
+  <!-- AD = 14 (lateral edge) -->
+  <text x="96"  y="103" font-size="10" fill="#0d9488" transform="rotate(-57 96 103)">14 cm</text>
+
+  <!-- Unknown -->
+  <text x="240" y="100" font-size="10" fill="#7c3aed" font-style="italic">BC=?  CD=?</text>
+</svg>

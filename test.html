@@ -271,6 +271,7 @@
               <div class="q-content">
                 <div class="q-badges">${diffBadge}${catBadge}</div>
                 <div class="q-text">${q.question}</div>
+                ${q.diagram ? `<img src="${q.diagram}" class="q-diagram" alt="">` : ''}
                 <button class="reveal-btn" onclick="toggleAnswer(${i}, this)">Show answer</button>
                 <div class="answer-block" id="ans-${i}">
                   <div class="answer-label">Answer</div>

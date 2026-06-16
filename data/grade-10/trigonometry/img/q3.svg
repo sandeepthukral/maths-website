@@ -1,0 +1,19 @@
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <!-- Triangle XYZ: X(40,170) Y(160,170) Z(132,22) -->
+  <!-- Z = X + scale*(cos58°, -sin58°) for XZ=13, using scale so it fits -->
+  <line x1="40"  y1="170" x2="160" y2="170" stroke="#334155" stroke-width="1.5"/>
+  <line x1="40"  y1="170" x2="132" y2="22"  stroke="#334155" stroke-width="1.5"/>
+  <line x1="132" y1="22"  x2="160" y2="170" stroke="#334155" stroke-width="1.5"/>
+  <!-- Vertex labels -->
+  <text x="23"  y="176" font-size="13" font-weight="700" fill="#1e293b">X</text>
+  <text x="125" y="13"  font-size="13" font-weight="700" fill="#1e293b">Z</text>
+  <text x="163" y="176" font-size="13" font-weight="700" fill="#1e293b">Y</text>
+  <!-- Angle arc at X (58°) -->
+  <path d="M 60 170 A 20 20 0 0 0 51 151" fill="none" stroke="#475569" stroke-width="1"/>
+  <text x="58" y="159" font-size="11" fill="#475569">58°</text>
+  <!-- Side labels (teal = given) -->
+  <text x="99" y="185" text-anchor="middle" font-size="11" fill="#0d9488">9 cm</text>
+  <text x="74" y="88"  font-size="11" fill="#0d9488" transform="rotate(-55 74 88)">13 cm</text>
+  <!-- Area unknown -->
+  <text x="108" y="130" text-anchor="middle" font-size="11" fill="#7c3aed" font-style="italic">Area = ?</text>
+</svg>
