@@ -280,6 +280,11 @@ body {
   margin-bottom: 1rem;
 }
 
+.part-indent {
+  display: inline-block;
+  width: 1.5em;
+}
+
 .q-diagram {
   display: block;
   max-width: 300px;
