@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script src="parts.js"></script>
 </head>
 <body>
   <div class="page">
@@ -97,7 +98,7 @@
               <span class="q-number">${i + 1}.</span>
               <div class="q-content">
                 <span class="badge ${badgeClass(q.category)}">${q.category}</span>
-                <div class="q-text">${q.question}</div>
+                <div class="q-text">${formatParts(q.question)}</div>
                 ${q.diagram ? `<img src="${q.diagram}" class="q-diagram" alt="">` : ''}
                 <button class="reveal-btn${revealed ? ' revealed' : ''}"
                         onclick="toggleAnswer(${q.id}, this)">
@@ -105,7 +106,7 @@
                 </button>
                 <div class="answer-block${revealed ? ' visible' : ''}" id="ans-${q.id}">
                   <div class="answer-label">Answer</div>
-                  <div class="answer-text">${q.answer}</div>
+                  <div class="answer-text">${formatParts(q.answer)}</div>
                 </div>
               </div>
             </div>
